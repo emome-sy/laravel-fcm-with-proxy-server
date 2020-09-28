@@ -42,8 +42,8 @@ abstract class BaseRequest
             'project_id' => $this->config['sender_id'],
         ];
         if(!empty($this->config['custom_headers']))
-            foreach($this->config['custom_headers'] as $header)
-                array_push($headers, $header);
+            foreach($this->config['custom_headers'] as $key => $value)
+                $headers[$key] = $value;
         return $headers;
     }
 
