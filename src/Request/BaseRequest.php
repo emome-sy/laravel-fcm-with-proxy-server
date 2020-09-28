@@ -36,14 +36,14 @@ abstract class BaseRequest
      */
     protected function buildRequestHeader()
     {
-        return [
+        $headers = [
             'Authorization' => 'key='.$this->config['server_key'],
             'Content-Type' => 'application/json',
             'project_id' => $this->config['sender_id'],
-
-            //Passport Authorization
-            'Authorization' => 'Bearer ' . $this->config['passport_token'],
         ];
+        if(!empty($this->config['custom_headers']))
+            array_push($headers, $this->config['custom_headers']);
+        return $headers;
     }
 
     /**

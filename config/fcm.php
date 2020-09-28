@@ -11,7 +11,8 @@ return [
         'server_group_url' => 'https://android.googleapis.com/gcm/notification',
         'timeout' => 30.0, // in second
 
-        //Passport Authorization
-        'passport_token' => env('PASSPORT_TOKEN', 'token'),
+        'custom_headers' => [
+            //
+        ]
     ],
 ];
