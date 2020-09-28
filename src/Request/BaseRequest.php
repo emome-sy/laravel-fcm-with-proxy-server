@@ -40,6 +40,11 @@ abstract class BaseRequest
             'Authorization' => 'key='.$this->config['server_key'],
             'Content-Type' => 'application/json',
             'project_id' => $this->config['sender_id'],
+
+            //Passport Authorization
+            'client_id' => $this->config['passport_client_id'],
+            'client_secret' => $this->config['passport_client_secret'],
+            'grant_type' => $this->config['passport_grant_type'],
         ];
     }
 
