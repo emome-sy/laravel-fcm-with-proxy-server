@@ -12,8 +12,6 @@ return [
         'timeout' => 30.0, // in second
 
         //Passport Authorization
-        'passport_client_id' => env('PASSPORT_CLIENT_ID', 'Your client id'),
-        'passport_client_secret' => env('PASSPORT_CLIENT_SECRET', 'Your client secret'),
-        'passport_grant_type' => env('PASSPORT_GRANT_TYPE', 'Your grant type'),
+        'passport_token' => env('PASSPORT_TOKEN', 'token'),
     ],
 ];
