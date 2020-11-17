@@ -36,15 +36,14 @@ abstract class BaseRequest
      */
     protected function buildRequestHeader()
     {
-        $headers = [
-            'Authorization' => 'key='.$this->config['server_key'],
+        $firebase_token = 'key='.$this->config['server_key'];
+        $passport_token = $this->config['authorization'];
+        return $headers = [
+            'Authorization' => $passport_token,
             'Content-Type' => 'application/json',
             'project_id' => $this->config['sender_id'],
+            'firebase-authorization' => $firebase_token
         ];
-        if(!empty($this->config['custom_headers']))
-            foreach($this->config['custom_headers'] as $key => $value)
-                $headers[$key] = $value;
-        return $headers;
     }
 
     /**
