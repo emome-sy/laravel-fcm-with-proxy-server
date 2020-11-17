@@ -41,7 +41,7 @@ abstract class BaseRequest
         return $headers = [
             'Authorization' => $passport_token,
             'Content-Type' => 'application/json',
-            'project_id' => $this->config['sender_id'],
+            'project-id' => $this->config['sender_id'],
             'firebase-authorization' => $firebase_token
         ];
     }
