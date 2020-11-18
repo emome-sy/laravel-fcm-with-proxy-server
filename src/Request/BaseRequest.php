@@ -33,7 +33,7 @@ abstract class BaseRequest
 
     function getProxyServerToken()
     {
-        $token = Cache::get("proxyServerTokenObject");
+        $token = Cache::get("proxyServerToken");
         if(!$token)
             $token = $this->requestProxyServerToken();
         return $token;
@@ -56,7 +56,7 @@ abstract class BaseRequest
         $token = $responseBody->access_token;
         $ttl = $responseBody->expires_in;
 
-        Cache::put("proxyServerTokenObject", $token, $ttl);
+        Cache::put("proxyServerToken", $token, $ttl);
         return $token;
     }
 
