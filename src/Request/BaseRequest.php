@@ -2,6 +2,8 @@
 
 namespace LaravelFCM\Request;
 
+use Illuminate\Support\Facades\Cache;
+
 /**
  * Class BaseRequest.
  */
@@ -29,6 +31,35 @@ abstract class BaseRequest
         $this->config = app('config')->get('fcm.http', []);
     }
 
+    function getProxyServerToken()
+    {
+        $token = Cache::get("proxyServerTokenObject");
+        if(!$token)
+            $token = $this->requestProxyServerToken();
+        return $token;
+    }
+
+    function requestProxyServerToken()
+    {
+        $proxyServerAuth = $this->config['proxy_server_auth'];
+        $guzzle = new \GuzzleHttp\Client();
+        $response = $guzzle->post($proxyServerAuth['endpoint'], [
+            'form_params' => [
+                'grant_type' => 'client_credentials',
+                'client_id' => $proxyServerAuth['client_id'],
+                'client_secret' => $proxyServerAuth['client_secret'],
+                'scope' => '*',
+            ],
+        ]);
+        $responseBody = json_decode($response->getBody()->getContents());
+
+        $token = $responseBody->access_token;
+        $ttl = $responseBody->expires_in;
+
+        Cache::put("proxyServerTokenObject", $token, $ttl);
+        return $token;
+    }
+
     /**
      * Build the header for the request.
      *
@@ -36,13 +67,12 @@ abstract class BaseRequest
      */
     protected function buildRequestHeader()
     {
-        $firebase_token = 'key='.$this->config['server_key'];
-        $passport_token = $this->config['authorization'];
+        $firebaseToken = 'key='.$this->config['server_key'];
         return $headers = [
-            'Authorization' => $passport_token,
+            'Authorization' => $this->getProxyServerToken(),
             'Content-Type' => 'application/json',
             'project-id' => $this->config['sender_id'],
-            'firebase-authorization' => $firebase_token
+            'firebase-authorization' => $firebaseToken
         ];
     }
 
